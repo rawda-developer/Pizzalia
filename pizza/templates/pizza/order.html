@@ -1,37 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="Description" content="Enter your description here" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>Order Form</title>
-</head>
-
-<body>
-    <div class="container my-3 mx-5">
-        {% if message %}
-        <h2>{{message}}</h2>
-        {% endif %}
-        {% if pizza %}
-        <a href="{% url 'edit' pizza_pk %}" class="Edit Pizza">Edit Pizza</a>
-        {% endif %}
-        <form method="post"> {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Order" class="btn btn-primary">
-        </form>
-        <h2>Want more than one Pizza?</h2>
-        <form method='get' action="{% url 'pizzas' %}"> {% csrf_token %}
-            {{multiple_pizza_form.as_p}}
-            <input type="submit" value="Order" class="btn btn-primary">
-        </form>
+{% extends 'pizza/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% if message %}
+<h2>{{message}}</h2>
+{% endif %}
+{% if pizza %}
+<a href="{% url 'edit' pizza_pk %}" class="Edit Pizza">Edit Pizza</a>
+{% endif %}
+<form method="post" novalidate> {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <div class="{% if form.errors %}alert alert-danger px-1 py-1{% endif %}">{{field.errors}}</div>
+        {{field.label_tag}}
+        {% render_field field class="form-control" %}
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
-</body>
+    {% endfor %}
 
-</html>
+    <input type="submit" value="Order" class="btn btn-primary">
+    <br> <br>
+</form>
+<h2>Want more than one Pizza?</h2>
+<form method='get' action="{% url 'pizzas' %}"> {% csrf_token %}
+    {% for field in multiple_pizza_form%}
+    <span>{{field.label_tag}}</span>
+    <span>{% render_field field class="form-control" %}</span>
+    {% endfor %}
+    <input type="submit" value="Order" class="btn btn-primary">
+</form>
+{% endblock %}

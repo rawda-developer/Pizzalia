@@ -17,8 +17,13 @@ def order(request):
             new_form = PizzaForm()
             message = f"Your {filled_form.cleaned_data['size']} pizza has been ordered successfully"
             return render(request, 'pizza/order.html', {'form': new_form, 'message': message, 'pizza_pk': created_pizza.pk, 'multiple_pizza_form': multiple_pizza_form})
-        elif multiple_pizza_form.is_valid():
-            return render(request, 'pizza/pizzas.html')
+        elif not filled_form.is_valid():
+            message = "Sorry there was an error"
+            new_form = PizzaForm()
+            return render(request, 'pizza/order.html', {'form': new_form, 'message': message, 'multiple_pizza_form': multiple_pizza_form})
+        # elif multiple_pizza_form.is_valid():
+        #     return render(request, 'pizza/pizzas.html')
+
     else:
         form = PizzaForm()
         return render(request, 'pizza/order.html', {'form': form, 'multiple_pizza_form': multiple_pizza_form})

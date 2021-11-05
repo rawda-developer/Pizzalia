@@ -9,27 +9,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Order Form</title>
+    <title>Edit Pizza</title>
 </head>
 
 <body>
-    <div class="container my-3 mx-5">
-        {% if message %}
-        <h2>{{message}}</h2>
-        {% endif %}
-        {% if pizza %}
-        <a href="{% url 'edit' pizza_pk %}" class="Edit Pizza">Edit Pizza</a>
-        {% endif %}
-        <form method="post"> {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Order" class="btn btn-primary">
-        </form>
-        <h2>Want more than one Pizza?</h2>
-        <form method='get' action="{% url 'pizzas' %}"> {% csrf_token %}
-            {{multiple_pizza_form.as_p}}
-            <input type="submit" value="Order" class="btn btn-primary">
-        </form>
-    </div>
+    {% if note %}
+    <p>{{note}}</p>
+    {% endif %}
+    <form method="post"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Edit">
+    </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 </body>
